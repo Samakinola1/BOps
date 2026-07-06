@@ -50,6 +50,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!user.emailVerified) {
+      return NextResponse.json(
+        { error: 'Please verify your email address before logging in.' },
+        { status: 403 }
+      );
+    }
+
     // Record login activity
     if (user.businessId) {
       const { logActivity } = await import('@/lib/services/activity');

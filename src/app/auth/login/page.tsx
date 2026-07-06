@@ -12,6 +12,35 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [resending, setResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
+
+  const handleResendVerification = async () => {
+    if (!email) {
+      setError('Please enter your email address to resend verification.');
+      return;
+    }
+    setResending(true);
+    setError('');
+    setResendMessage('');
+    try {
+      const res = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setResendMessage(data.message || 'Verification link sent successfully.');
+      } else {
+        setError(data.error || 'Failed to resend verification link.');
+      }
+    } catch (err) {
+      setError('Failed to resend verification link. Please check your network connection.');
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +51,7 @@ export default function LoginPage() {
 
     setSubmitting(true);
     setError('');
+    setResendMessage('');
 
     const result = await login(email, password);
     if (!result.success) {
@@ -60,9 +90,26 @@ export default function LoginPage() {
         <div className="glass-card-elevated py-8 px-6 shadow-2xl sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="flex items-center px-4 py-3 rounded-xl text-sm font-medium animate-fade-in-down"
+              <div className="flex flex-col gap-2 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in-down"
                 style={{ background: 'var(--error-bg)', border: '1px solid rgba(248, 113, 113, 0.3)', color: 'var(--error)' }}>
-                {error}
+                <div>{error}</div>
+                {error.includes('verify your email') && (
+                  <button
+                    type="button"
+                    onClick={handleResendVerification}
+                    disabled={resending}
+                    className="text-xs font-bold underline text-left hover:opacity-80 transition-opacity disabled:opacity-50 mt-1 cursor-pointer"
+                  >
+                    {resending ? 'Resending verification link...' : 'Resend verification link'}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {resendMessage && (
+              <div className="flex items-center px-4 py-3 rounded-xl text-sm font-medium animate-fade-in-down"
+                style={{ background: 'rgba(69, 243, 255, 0.1)', border: '1px solid rgba(69, 243, 255, 0.3)', color: 'var(--accent-primary)' }}>
+                {resendMessage}
               </div>
             )}
 
