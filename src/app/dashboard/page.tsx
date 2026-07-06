@@ -2401,59 +2401,73 @@ export default function DashboardPage() {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-[180px] opacity-[0.04] pointer-events-none print:hidden animate-float-reverse" style={{ background: 'var(--accent-secondary)' }} />
 
       {/* -------------------- PRINT WORKSPACE OVERLAYS -------------------- */}
-      {/* Quote print */}
-      <div id="print-area" className="hidden print:block bg-white text-black p-12 min-h-screen w-full font-sans">
+      {/* -------------------- PRINT WORKSPACE OVERLAYS -------------------- */}
+      <div id="print-area" className="hidden print:block bg-white text-slate-800 p-12 min-h-screen w-full font-sans border-t-[8px] border-slate-800">
+        {/* Quote print */}
         {printingQuote && (
           <div className="space-y-8">
-            <div className="flex justify-between items-start border-b border-gray-300 pb-6">
+            <div className="flex justify-between items-start border-b border-slate-200 pb-6">
               <div>
-                <h1 className="text-3xl font-black tracking-tight text-gray-900">{companyName || 'My Company'}</h1>
-                <p className="text-sm text-gray-500 mt-1 whitespace-pre-line">{address}</p>
-                {taxNumber && <p className="text-xs text-gray-400 mt-1">Tax ID: {taxNumber}</p>}
+                {business?.logoUrl ? (
+                  <img src={business.logoUrl} alt="Logo" className="max-h-16 max-w-[200px] object-contain mb-4" />
+                ) : (
+                  <h1 className="text-3xl font-black tracking-tight text-slate-900">{companyName || 'My Company'}</h1>
+                )}
+                <p className="text-sm text-slate-500 mt-1 whitespace-pre-line">{address}</p>
+                {taxNumber && <p className="text-xs text-slate-400 mt-1">Tax ID: {taxNumber}</p>}
               </div>
               <div className="text-right">
-                <h2 className="text-4xl font-extrabold tracking-wider text-gray-300 font-mono">QUOTATION</h2>
-                <div className="mt-4 text-sm text-gray-600 space-y-1">
-                  <p><span className="font-semibold">Quote Number:</span> {printingQuote.quoteNumber}</p>
-                  <p><span className="font-semibold">Issue Date:</span> {new Date(printingQuote.issueDate).toLocaleDateString()}</p>
-                  <p><span className="font-semibold">Valid Until:</span> {new Date(printingQuote.expiryDate).toLocaleDateString()}</p>
+                <h2 className="text-4xl font-black tracking-wider text-slate-400 font-mono">QUOTATION</h2>
+                <div className="mt-4 text-sm text-slate-600 space-y-1">
+                  <p><span className="font-semibold text-slate-800">Quote Number:</span> {printingQuote.quoteNumber}</p>
+                  <p><span className="font-semibold text-slate-800">Issue Date:</span> {new Date(printingQuote.issueDate).toLocaleDateString()}</p>
+                  <p><span className="font-semibold text-slate-800">Valid Until:</span> {new Date(printingQuote.expiryDate).toLocaleDateString()}</p>
                 </div>
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Bill To</h3>
-              <div className="mt-2 text-sm text-gray-800">
-                <p className="font-bold text-md text-black">{printingQuote.customer.name}</p>
-                {printingQuote.customer.businessName && <p className="font-semibold">{printingQuote.customer.businessName}</p>}
-                {printingQuote.customer.address && <p className="whitespace-pre-line mt-1">{printingQuote.customer.address}</p>}
-                {printingQuote.customer.email && <p className="mt-1">{printingQuote.customer.email}</p>}
-                {printingQuote.customer.phone && <p>{printingQuote.customer.phone}</p>}
+            <div className="grid grid-cols-2 gap-8 pb-8">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Billed To</h3>
+                <div className="text-sm text-slate-800 space-y-1">
+                  <p className="font-bold text-slate-900 text-base">{printingQuote.customer.name}</p>
+                  {printingQuote.customer.businessName && <p className="text-slate-600 font-medium">{printingQuote.customer.businessName}</p>}
+                  {printingQuote.customer.address && <p className="whitespace-pre-line text-slate-600">{printingQuote.customer.address}</p>}
+                  {printingQuote.customer.email && <p className="text-slate-600">{printingQuote.customer.email}</p>}
+                  {printingQuote.customer.phone && <p className="text-slate-600">{printingQuote.customer.phone}</p>}
+                </div>
+              </div>
+              <div className="text-right">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Quote Info</h3>
+                <div className="text-sm text-slate-600 space-y-1">
+                  <p><span className="font-semibold text-slate-800">Prepared By:</span> {user.name || 'Account Owner'}</p>
+                  <p><span className="font-semibold text-slate-800">Contact:</span> {user.email}</p>
+                </div>
               </div>
             </div>
 
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-left border-collapse mt-8">
               <thead>
-                <tr className="border-b border-gray-400 bg-gray-100 text-xs font-bold uppercase tracking-wider text-gray-700">
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-4 text-center">Qty</th>
-                  <th className="py-3 px-4 text-right">Unit Price</th>
-                  <th className="py-3 px-4 text-right">Tax %</th>
-                  <th className="py-3 px-4 text-right">Disc %</th>
-                  <th className="py-3 px-4 text-right">Total</th>
+                <tr className="border-b border-slate-300 bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-600">
+                  <th className="py-3.5 px-4 font-bold text-slate-700">Description</th>
+                  <th className="py-3.5 px-4 text-center font-bold text-slate-700">Qty</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Unit Price</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Tax</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Discount</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-300">
+              <tbody className="divide-y divide-slate-200">
                 {printingQuote.items.map((item, index) => (
-                  <tr key={index}>
-                    <td className="py-3 px-4 font-semibold text-gray-900">{item.description}</td>
-                    <td className="py-3 px-4 text-center">{item.quantity}</td>
-                    <td className="py-3 px-4 text-right">
+                  <tr key={index} className="text-sm">
+                    <td className="py-4 px-4 font-semibold text-slate-900">{item.description}</td>
+                    <td className="py-4 px-4 text-center text-slate-600">{item.quantity}</td>
+                    <td className="py-4 px-4 text-right text-slate-600">
                       {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.unitPrice)}
                     </td>
-                    <td className="py-3 px-4 text-right">{item.taxRate}%</td>
-                    <td className="py-3 px-4 text-right">{item.discountRate}%</td>
-                    <td className="py-3 px-4 text-right font-bold text-black">
+                    <td className="py-4 px-4 text-right text-slate-500">{item.taxRate}%</td>
+                    <td className="py-4 px-4 text-right text-slate-500">{item.discountRate}%</td>
+                    <td className="py-4 px-4 text-right font-bold text-slate-900">
                       {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.totalAmount)}
                     </td>
                   </tr>
@@ -2461,95 +2475,122 @@ export default function DashboardPage() {
               </tbody>
             </table>
 
-            <div className="flex justify-end pt-4 border-t border-gray-300">
-              <div className="w-64 space-y-2 text-sm">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal:</span>
+            <div className="flex justify-end pt-6">
+              <div className="w-80 space-y-3 text-sm">
+                <div className="flex justify-between text-slate-600">
+                  <span>Subtotal</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                     printingQuote.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0)
                   )}</span>
                 </div>
                 {printingQuote.discountAmount > 0 && (
-                  <div className="flex justify-between text-gray-600">
-                    <span>Discount:</span>
+                  <div className="flex justify-between text-red-600 font-medium">
+                    <span>Discount</span>
                     <span>-{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingQuote.discountAmount)}</span>
                   </div>
                 )}
                 {printingQuote.taxAmount > 0 && (
-                  <div className="flex justify-between text-gray-600">
-                    <span>Tax:</span>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Tax</span>
                     <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingQuote.taxAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between border-t border-gray-400 pt-2 text-base font-black text-black">
-                  <span>Total Amount:</span>
+                <div className="flex justify-between border-t-2 border-double border-slate-300 pt-3 text-base font-bold text-slate-900 bg-slate-50/50 p-2 rounded">
+                  <span>Total Amount</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingQuote.totalAmount)}</span>
                 </div>
               </div>
             </div>
 
             {printingQuote.notes && (
-              <div className="border-t border-gray-300 pt-6 mt-12 space-y-2 text-xs text-gray-600 leading-relaxed">
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider">Terms & Notes</h4>
+              <div className="border-t border-slate-200 pt-8 mt-12 space-y-2 text-xs text-slate-500 leading-relaxed max-w-2xl">
+                <h4 className="font-bold text-slate-700 uppercase tracking-widest text-[10px]">Terms & Conditions</h4>
                 <p className="whitespace-pre-line">{printingQuote.notes}</p>
               </div>
             )}
+
+            <div className="text-center text-xs text-slate-400 mt-20 pt-8 border-t border-slate-100">
+              <p className="font-semibold">Thank you for your business!</p>
+              <p className="mt-1">For any queries regarding this quotation, please contact us at {user.email}.</p>
+            </div>
           </div>
         )}
 
         {/* Invoice print */}
         {printingInvoice && (
           <div className="space-y-8">
-            <div className="flex justify-between items-start border-b border-gray-300 pb-6">
+            <div className="flex justify-between items-start border-b border-slate-200 pb-6">
               <div>
-                <h1 className="text-3xl font-black tracking-tight text-gray-900">{companyName || 'My Company'}</h1>
-                <p className="text-sm text-gray-500 mt-1 whitespace-pre-line">{address}</p>
-                {taxNumber && <p className="text-xs text-gray-400 mt-1">Tax ID: {taxNumber}</p>}
+                {business?.logoUrl ? (
+                  <img src={business.logoUrl} alt="Logo" className="max-h-16 max-w-[200px] object-contain mb-4" />
+                ) : (
+                  <h1 className="text-3xl font-black tracking-tight text-slate-900">{companyName || 'My Company'}</h1>
+                )}
+                <p className="text-sm text-slate-500 mt-1 whitespace-pre-line">{address}</p>
+                {taxNumber && <p className="text-xs text-slate-400 mt-1">Tax ID: {taxNumber}</p>}
               </div>
               <div className="text-right">
-                <h2 className="text-4xl font-extrabold tracking-wider text-gray-300 font-mono">INVOICE</h2>
-                <div className="mt-4 text-sm text-gray-600 space-y-1">
-                  <p><span className="font-semibold">Invoice Number:</span> {printingInvoice.invoiceNumber}</p>
-                  <p><span className="font-semibold">Issue Date:</span> {new Date(printingInvoice.issueDate).toLocaleDateString()}</p>
-                  <p><span className="font-semibold">Due Date:</span> {new Date(printingInvoice.dueDate).toLocaleDateString()}</p>
-                  <p><span className="font-semibold">Status:</span> {printingInvoice.status}</p>
+                <h2 className="text-4xl font-black tracking-wider text-slate-400 font-mono">INVOICE</h2>
+                <div className="mt-4 text-sm text-slate-600 space-y-1">
+                  <p><span className="font-semibold text-slate-800">Invoice Number:</span> {printingInvoice.invoiceNumber}</p>
+                  <p><span className="font-semibold text-slate-800">Issue Date:</span> {new Date(printingInvoice.issueDate).toLocaleDateString()}</p>
+                  <p><span className="font-semibold text-slate-800">Due Date:</span> {new Date(printingInvoice.dueDate).toLocaleDateString()}</p>
+                  <p>
+                    <span className="font-semibold text-slate-800">Status:</span>{' '}
+                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                      printingInvoice.status === 'Paid' ? 'bg-green-100 text-green-800' :
+                      printingInvoice.status === 'Overdue' ? 'bg-red-100 text-red-800' :
+                      'bg-slate-100 text-slate-800'
+                    }`}>
+                      {printingInvoice.status}
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Bill To</h3>
-              <div className="mt-2 text-sm text-gray-800">
-                <p className="font-bold text-md text-black">{printingInvoice.customer.name}</p>
-                {printingInvoice.customer.businessName && <p className="font-semibold">{printingInvoice.customer.businessName}</p>}
-                {printingInvoice.customer.address && <p className="whitespace-pre-line mt-1">{printingInvoice.customer.address}</p>}
-                {printingInvoice.customer.email && <p className="mt-1">{printingInvoice.customer.email}</p>}
-                {printingInvoice.customer.phone && <p>{printingInvoice.customer.phone}</p>}
+            <div className="grid grid-cols-2 gap-8 pb-8">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Billed To</h3>
+                <div className="text-sm text-slate-800 space-y-1">
+                  <p className="font-bold text-slate-900 text-base">{printingInvoice.customer.name}</p>
+                  {printingInvoice.customer.businessName && <p className="text-slate-600 font-medium">{printingInvoice.customer.businessName}</p>}
+                  {printingInvoice.customer.address && <p className="whitespace-pre-line text-slate-600">{printingInvoice.customer.address}</p>}
+                  {printingInvoice.customer.email && <p className="text-slate-600">{printingInvoice.customer.email}</p>}
+                  {printingInvoice.customer.phone && <p className="text-slate-600">{printingInvoice.customer.phone}</p>}
+                </div>
+              </div>
+              <div className="text-right">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Payment Details</h3>
+                <div className="text-sm text-slate-600 space-y-1">
+                  <p><span className="font-semibold text-slate-800">Billing Entity:</span> {companyName}</p>
+                  <p><span className="font-semibold text-slate-800">Contact Billing:</span> {user.email}</p>
+                </div>
               </div>
             </div>
 
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-left border-collapse mt-8">
               <thead>
-                <tr className="border-b border-gray-400 bg-gray-100 text-xs font-bold uppercase tracking-wider text-gray-700">
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-4 text-center">Qty</th>
-                  <th className="py-3 px-4 text-right">Unit Price</th>
-                  <th className="py-3 px-4 text-right">Tax %</th>
-                  <th className="py-3 px-4 text-right">Disc %</th>
-                  <th className="py-3 px-4 text-right">Total</th>
+                <tr className="border-b border-slate-300 bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-600">
+                  <th className="py-3.5 px-4 font-bold text-slate-700">Description</th>
+                  <th className="py-3.5 px-4 text-center font-bold text-slate-700">Qty</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Unit Price</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Tax</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Discount</th>
+                  <th className="py-3.5 px-4 text-right font-bold text-slate-700">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-300">
+              <tbody className="divide-y divide-slate-200">
                 {printingInvoice.items.map((item, index) => (
-                  <tr key={index}>
-                    <td className="py-3 px-4 font-semibold text-gray-900">{item.description}</td>
-                    <td className="py-3 px-4 text-center">{item.quantity}</td>
-                    <td className="py-3 px-4 text-right">
+                  <tr key={index} className="text-sm">
+                    <td className="py-4 px-4 font-semibold text-slate-900">{item.description}</td>
+                    <td className="py-4 px-4 text-center text-slate-600">{item.quantity}</td>
+                    <td className="py-4 px-4 text-right text-slate-600">
                       {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.unitPrice)}
                     </td>
-                    <td className="py-3 px-4 text-right">{item.taxRate}%</td>
-                    <td className="py-3 px-4 text-right">{item.discountRate}%</td>
-                    <td className="py-3 px-4 text-right font-bold text-black">
+                    <td className="py-4 px-4 text-right text-slate-500">{item.taxRate}%</td>
+                    <td className="py-4 px-4 text-right text-slate-500">{item.discountRate}%</td>
+                    <td className="py-4 px-4 text-right font-bold text-slate-900">
                       {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.totalAmount)}
                     </td>
                   </tr>
@@ -2557,47 +2598,52 @@ export default function DashboardPage() {
               </tbody>
             </table>
 
-            <div className="flex justify-end pt-4 border-t border-gray-300">
-              <div className="w-64 space-y-2 text-sm">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal:</span>
+            <div className="flex justify-end pt-6">
+              <div className="w-80 space-y-3 text-sm">
+                <div className="flex justify-between text-slate-600">
+                  <span>Subtotal</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                     printingInvoice.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0)
                   )}</span>
                 </div>
                 {printingInvoice.discountAmount > 0 && (
-                  <div className="flex justify-between text-gray-600">
-                    <span>Discount:</span>
+                  <div className="flex justify-between text-red-600 font-medium">
+                    <span>Discount</span>
                     <span>-{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingInvoice.discountAmount)}</span>
                   </div>
                 )}
                 {printingInvoice.taxAmount > 0 && (
-                  <div className="flex justify-between text-gray-600">
-                    <span>Tax:</span>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Tax</span>
                     <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingInvoice.taxAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between border-t border-gray-400 pt-2 text-base font-black text-black">
-                  <span>Total Invoiced:</span>
+                <div className="flex justify-between border-t border-slate-200 pt-3 text-base font-bold text-slate-900">
+                  <span>Total Invoiced</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingInvoice.totalAmount)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Total Paid:</span>
+                <div className="flex justify-between text-slate-500">
+                  <span>Total Paid</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingInvoice.totalPaid)}</span>
                 </div>
-                <div className="flex justify-between border-t border-gray-300 pt-1 font-bold text-gray-900">
-                  <span>Remaining Balance:</span>
+                <div className="flex justify-between border-t-2 border-double border-slate-300 pt-2 text-md font-black text-[#0f172a] bg-slate-50/50 p-2 rounded">
+                  <span>Remaining Balance</span>
                   <span>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(printingInvoice.outstandingBalance)}</span>
                 </div>
               </div>
             </div>
 
             {printingInvoice.notes && (
-              <div className="border-t border-gray-300 pt-6 mt-12 space-y-2 text-xs text-gray-600 leading-relaxed">
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider">Terms & Notes</h4>
+              <div className="border-t border-slate-200 pt-8 mt-12 space-y-2 text-xs text-slate-500 leading-relaxed max-w-2xl">
+                <h4 className="font-bold text-slate-700 uppercase tracking-widest text-[10px]">Terms & Conditions</h4>
                 <p className="whitespace-pre-line">{printingInvoice.notes}</p>
               </div>
             )}
+
+            <div className="text-center text-xs text-slate-400 mt-20 pt-8 border-t border-slate-100">
+              <p className="font-semibold">Thank you for your business!</p>
+              <p className="mt-1">For any queries regarding this invoice, please contact us at {user.email}.</p>
+            </div>
           </div>
         )}
       </div>
