@@ -2159,10 +2159,18 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#0b0c10]">
-        <div className="flex flex-col items-center">
-          <Loader2 className="animate-spin h-12 w-12 text-[#45f3ff]" />
-          <p className="mt-4 text-[#c5c6c7] text-sm font-medium tracking-wide">Loading workspace...</p>
+      <div className="flex-1 flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
+        <div className="flex flex-col items-center animate-fade-in">
+          <div className="relative">
+            <Loader2 className="animate-spin h-12 w-12" style={{ color: 'var(--accent-primary)' }} />
+            <div className="absolute inset-[-8px] rounded-full animate-glow-ring" />
+          </div>
+          <p className="mt-5 text-sm font-semibold tracking-wide" style={{ color: 'var(--text-secondary)' }}>Loading workspace...</p>
+          <div className="mt-3 flex gap-1.5">
+            <div className="h-1 w-8 rounded-full skeleton" />
+            <div className="h-1 w-12 rounded-full skeleton" style={{ animationDelay: '0.2s' }} />
+            <div className="h-1 w-6 rounded-full skeleton" style={{ animationDelay: '0.4s' }} />
+          </div>
         </div>
       </div>
     );
@@ -2387,10 +2395,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row bg-[#0b0c10] text-[#c5c6c7] min-h-screen relative overflow-hidden">
+    <div className="flex-1 flex flex-col md:flex-row min-h-screen relative overflow-hidden" style={{ background: 'var(--bg-primary)', color: 'var(--text-secondary)' }}>
       {/* Background radial gradients */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#45f3ff] rounded-full blur-[180px] opacity-5 pointer-events-none print:hidden" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#6f42c1] rounded-full blur-[180px] opacity-5 pointer-events-none print:hidden" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[180px] opacity-[0.04] pointer-events-none print:hidden animate-float" style={{ background: 'var(--accent-primary)' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-[180px] opacity-[0.04] pointer-events-none print:hidden animate-float-reverse" style={{ background: 'var(--accent-secondary)' }} />
 
       {/* -------------------- PRINT WORKSPACE OVERLAYS -------------------- */}
       {/* Quote print */}
@@ -2595,16 +2603,16 @@ export default function DashboardPage() {
       </div>
 
       {/* Mobile top navigation header */}
-      <header className="flex md:hidden items-center justify-between bg-[#1f2833]/60 backdrop-blur-md border-b border-gray-800/80 px-4 py-3 shrink-0 z-20 print:hidden">
+      <header className="flex md:hidden items-center justify-between backdrop-blur-xl px-4 py-3 shrink-0 z-20 print:hidden" style={{ background: 'var(--bg-card-elevated)', borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center space-x-3">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-[#45f3ff] to-[#6f42c1] flex items-center justify-center text-[#0b0c10] font-bold text-lg shadow-md">
+          <div className="h-8 w-8 rounded-lg flex items-center justify-center font-bold text-lg shadow-md animate-gradient-shift" style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'var(--bg-primary)' }}>
             BO
           </div>
-          <h1 className="font-extrabold text-white text-sm tracking-tight">Ops Suite</h1>
+          <h1 className="font-extrabold text-sm tracking-tight" style={{ color: 'var(--text-primary)' }}>Ops Suite</h1>
         </div>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-1.5 rounded-lg bg-gray-800/60 border border-gray-700 text-gray-400 hover:text-white focus:outline-none"
+          className="p-2 rounded-xl transition-all duration-200 hover:scale-105" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
         >
           {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -2613,70 +2621,73 @@ export default function DashboardPage() {
       {/* Backdrop overlay for mobile sidebar drawer */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-30 md:hidden modal-overlay"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar navigation */}
-      <aside className={`fixed md:relative inset-y-0 left-0 w-64 bg-[#0b0c10]/95 md:bg-[#1f2833]/40 backdrop-blur-md border-r border-gray-800/80 flex flex-col py-6 px-4 z-40 transform transition-transform duration-300 ease-in-out md:transform-none md:transition-none print:hidden ${
+      <aside className={`fixed md:relative inset-y-0 left-0 w-[270px] backdrop-blur-xl flex flex-col py-6 px-4 z-40 transform transition-transform duration-300 ease-in-out md:transform-none md:transition-none print:hidden ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-      }`}>
-        <div className="flex items-center justify-between md:justify-start space-x-3 px-3 mb-8">
+      }`} style={{ background: 'var(--bg-secondary)', borderRight: '1px solid var(--border-subtle)' }}>
+        <div className="flex items-center justify-between md:justify-start space-x-3 px-3 mb-7">
           <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-tr from-[#45f3ff] to-[#6f42c1] flex items-center justify-center text-[#0b0c10] font-bold text-xl shadow-md">
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg animate-gradient-shift" style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'var(--bg-primary)' }}>
               BO
             </div>
             <div>
-              <h1 className="font-extrabold text-white text-md tracking-tight">Ops Suite</h1>
-              <p className="text-[10px] text-[#45f3ff] uppercase tracking-widest font-bold">Foundation v1</p>
+              <h1 className="font-extrabold text-md tracking-tight" style={{ color: 'var(--text-primary)' }}>Ops Suite</h1>
+              <p className="text-[10px] uppercase tracking-widest font-bold" style={{ color: 'var(--accent-primary)' }}>SaaS Platform</p>
             </div>
           </div>
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="md:hidden p-1 text-gray-400 hover:text-white"
-          >
+          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-1 transition-colors" style={{ color: 'var(--text-muted)' }}>
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* User Card */}
-        <div className="bg-[#1f2833]/60 border border-gray-800 rounded-xl p-4 mb-6 flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-800 border border-gray-600 flex items-center justify-center text-white font-bold uppercase shadow-inner">
-            {user.name ? user.name[0] : user.email[0]}
+        <div className="glass-card p-4 mb-6 flex items-center space-x-3">
+          <div className="relative">
+            <div className="h-10 w-10 rounded-full flex items-center justify-center font-bold uppercase shadow-inner" style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'var(--bg-primary)' }}>
+              {user.name ? user.name[0] : user.email[0]}
+            </div>
+            <div className="absolute -bottom-0.5 -right-0.5 status-dot status-dot-online" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-white truncate">{user.name || 'User Profile'}</p>
-            <span className="inline-flex items-center text-[10px] text-[#86c232] font-semibold">
+            <p className="text-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{user.name || 'User Profile'}</p>
+            <span className="inline-flex items-center text-[10px] font-semibold" style={{ color: 'var(--accent-tertiary)' }}>
               <UserCheck className="h-3 w-3 mr-1" />
-              {user.emailVerified ? 'Verified Account' : 'Unverified'}
+              {user.emailVerified ? 'Verified' : 'Unverified'}
             </span>
           </div>
         </div>
 
-        <nav className="flex-1 space-y-2 overflow-y-auto">
+        <nav className="flex-1 space-y-1 overflow-y-auto">
+          {/* Section: Workspace */}
+          <div className="section-divider"><span>Workspace</span></div>
+
           <button
             onClick={() => { setActiveTab('dashboard'); setIsSidebarOpen(false); }}
-            className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
               activeTab === 'dashboard'
-                ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+                ? 'text-white shadow-sm'
+                : 'hover:text-white'
             }`}
+            style={activeTab === 'dashboard' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
           >
-            <LayoutDashboard className="h-5 w-5 mr-3 text-[#45f3ff]" />
-            Dashboard Hub
+            <LayoutDashboard className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: 'var(--accent-primary)' }} />
+            Dashboard
           </button>
 
           {hasPermission(user, 'view:invoices') && (
             <button
               onClick={() => { setActiveTab('invoices'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                activeTab === 'invoices'
-                  ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                  : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+              className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+                activeTab === 'invoices' ? 'text-white shadow-sm' : 'hover:text-white'
               }`}
+              style={activeTab === 'invoices' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
             >
-              <Receipt className="h-5 w-5 mr-3" />
+              <Receipt className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: '#60a5fa' }} />
               Invoices
             </button>
           )}
@@ -2684,13 +2695,12 @@ export default function DashboardPage() {
           {hasPermission(user, 'view:quotations') && (
             <button
               onClick={() => { setActiveTab('quotations'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                activeTab === 'quotations'
-                  ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                  : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+              className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+                activeTab === 'quotations' ? 'text-white shadow-sm' : 'hover:text-white'
               }`}
+              style={activeTab === 'quotations' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
             >
-              <FileSignature className="h-5 w-5 mr-3" />
+              <FileSignature className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: 'var(--accent-secondary)' }} />
               Quotations
             </button>
           )}
@@ -2698,13 +2708,12 @@ export default function DashboardPage() {
           {hasPermission(user, 'view:expenses') && (
             <button
               onClick={() => { setActiveTab('expenses'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                activeTab === 'expenses'
-                  ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                  : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+              className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+                activeTab === 'expenses' ? 'text-white shadow-sm' : 'hover:text-white'
               }`}
+              style={activeTab === 'expenses' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
             >
-              <TrendingUp className="h-5 w-5 mr-3" />
+              <TrendingUp className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: '#fb923c' }} />
               Expenses
             </button>
           )}
@@ -2712,13 +2721,12 @@ export default function DashboardPage() {
           {hasPermission(user, 'view:inventory') && (
             <button
               onClick={() => { setActiveTab('inventory'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                activeTab === 'inventory'
-                  ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                  : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+              className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+                activeTab === 'inventory' ? 'text-white shadow-sm' : 'hover:text-white'
               }`}
+              style={activeTab === 'inventory' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
             >
-              <Package className="h-5 w-5 mr-3" />
+              <Package className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: 'var(--accent-tertiary)' }} />
               Inventory
             </button>
           )}
@@ -2726,56 +2734,59 @@ export default function DashboardPage() {
           {hasPermission(user, 'view:customers') && (
             <button
               onClick={() => { setActiveTab('customers'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                activeTab === 'customers'
-                  ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                  : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+              className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+                activeTab === 'customers' ? 'text-white shadow-sm' : 'hover:text-white'
               }`}
+              style={activeTab === 'customers' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
             >
-              <Users className="h-5 w-5 mr-3" />
+              <Users className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: '#f472b6' }} />
               Customers
             </button>
           )}
 
+          {/* Section: Settings */}
+          <div className="section-divider"><span>Settings</span></div>
+
           <button
             onClick={() => { setActiveTab('business'); setIsSidebarOpen(false); }}
-            className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-              activeTab === 'business'
-                ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+            className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+              activeTab === 'business' ? 'text-white shadow-sm' : 'hover:text-white'
             }`}
+            style={activeTab === 'business' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
           >
-            <Briefcase className="h-5 w-5 mr-3" />
+            <Briefcase className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: '#fbbf24' }} />
             Business Profile
           </button>
 
           <button
             onClick={() => { setActiveTab('profile'); setIsSidebarOpen(false); }}
-            className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
-              activeTab === 'profile'
-                ? 'bg-gradient-to-r from-[#45f3ff]/20 to-[#6f42c1]/10 text-white border-l-4 border-[#45f3ff]'
-                : 'hover:bg-[#1a1a24] text-gray-400 hover:text-white'
+            className={`w-full flex items-center px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 group ${
+              activeTab === 'profile' ? 'text-white shadow-sm' : 'hover:text-white'
             }`}
+            style={activeTab === 'profile' ? { background: 'rgba(var(--accent-primary-rgb), 0.1)', borderLeft: '3px solid var(--accent-primary)' } : { color: 'var(--text-tertiary)' }}
           >
-            <UserIcon className="h-5 w-5 mr-3" />
+            <UserIcon className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" style={{ color: '#c084fc' }} />
             User Settings
           </button>
         </nav>
 
-        <div className="pt-6 border-t border-gray-800">
+        <div className="pt-5" style={{ borderTop: '1px solid var(--border-subtle)' }}>
           <button
             onClick={() => { logout(); setIsSidebarOpen(false); }}
-            className="w-full flex items-center px-4 py-3 text-sm font-semibold text-red-400 hover:text-red-300 hover:bg-red-950/20 rounded-lg transition-colors duration-200"
+            className="w-full flex items-center px-4 py-2.5 text-[13px] font-semibold rounded-xl transition-all duration-200 group"
+            style={{ color: 'var(--error)' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--error-bg)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
           >
-            <LogOut className="h-5 w-5 mr-3" />
+            <LogOut className="h-[18px] w-[18px] mr-3 transition-transform duration-200 group-hover:scale-110" />
             Sign Out
           </button>
         </div>
       </aside>
 
       {/* Main panel */}
-      <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8 z-10 overflow-y-auto print:hidden">
-        <div className="max-w-4xl mx-auto">
+      <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8 z-10 overflow-y-auto print:hidden" style={{ background: 'var(--bg-primary)' }}>
+        <div className="max-w-5xl mx-auto">
           
           {/* -------------------- OPERATIONAL DASHBOARD OVERVIEW HUB -------------------- */}
           {activeTab === 'dashboard' && (() => {
@@ -2823,77 +2834,79 @@ export default function DashboardPage() {
             const lowStockList = products.filter(p => p.isLowStock).slice(0, 3);
 
             return (
-              <div className="space-y-6 animate-in fade-in duration-200">
+              <div className="space-y-6 animate-fade-in-up">
                 {/* Onboarding Trigger Banner */}
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="glass-card p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="flex items-center space-x-3">
-                    <BookOpen className="h-5 w-5 text-[#45f3ff]" />
+                    <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: 'var(--info-bg)', color: 'var(--accent-primary)' }}>
+                      <BookOpen className="h-4.5 w-4.5" />
+                    </div>
                     <div className="text-left">
-                      <h4 className="font-bold text-white text-xs">New to Ops Suite?</h4>
-                      <p className="text-[10px] text-gray-400">Launch our interactive system walk-through wizard or simulators anytime.</p>
+                      <h4 className="font-bold text-xs" style={{ color: 'var(--text-primary)' }}>New to Ops Suite?</h4>
+                      <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Launch our interactive walkthrough wizard anytime.</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setTourStep(1)}
-                    className="px-3 py-1.5 rounded-lg text-[10px] font-bold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] transition-all shrink-0"
+                    className="btn-primary px-4 py-2 text-[11px] rounded-lg shrink-0"
                   >
                     Start Guided Tour
                   </button>
                 </div>
 
                 {/* KPI cards across the top */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Revenue */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex items-center space-x-4 shadow-xl">
-                    <div className="h-10 w-10 rounded-xl bg-[#86c232]/10 border border-[#86c232]/20 flex items-center justify-center text-[#86c232]">
+                  <div className="glass-card-interactive p-5 flex items-center space-x-4 animate-fade-in-up delay-100">
+                    <div className="h-11 w-11 rounded-xl flex items-center justify-center" style={{ background: 'var(--success-bg)', border: '1px solid rgba(52, 211, 153, 0.2)', color: 'var(--success)' }}>
                       <DollarSign className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Cash Revenue</span>
-                      <h3 className="text-xl font-black text-white mt-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Cash Revenue</span>
+                      <h3 className="text-xl font-black mt-0.5" style={{ color: 'var(--text-primary)' }}>
                         {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(totalPaidCollected)}
                       </h3>
                     </div>
                   </div>
 
                   {/* Outstanding Invoices */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex items-center space-x-4 shadow-xl">
-                    <div className="h-10 w-10 rounded-xl bg-[#45f3ff]/10 border border-[#45f3ff]/20 flex items-center justify-center text-[#45f3ff]">
+                  <div className="glass-card-interactive p-5 flex items-center space-x-4 animate-fade-in-up delay-200">
+                    <div className="h-11 w-11 rounded-xl flex items-center justify-center" style={{ background: 'var(--info-bg)', border: '1px solid rgba(var(--accent-primary-rgb), 0.2)', color: 'var(--accent-primary)' }}>
                       <Receipt className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Unpaid Balances</span>
-                      <h3 className="text-xl font-black text-white mt-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Unpaid Balances</span>
+                      <h3 className="text-xl font-black mt-0.5" style={{ color: 'var(--text-primary)' }}>
                         {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(outstandingReceivables)}
                       </h3>
                     </div>
                   </div>
 
                   {/* Expenses */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex items-center space-x-4 shadow-xl">
-                    <div className="h-10 w-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+                  <div className="glass-card-interactive p-5 flex items-center space-x-4 animate-fade-in-up delay-300">
+                    <div className="h-11 w-11 rounded-xl flex items-center justify-center" style={{ background: 'var(--error-bg)', border: '1px solid rgba(248, 113, 113, 0.2)', color: 'var(--error)' }}>
                       <TrendingUp className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Log Expenses</span>
-                      <h3 className="text-xl font-black text-white mt-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Total Expenses</span>
+                      <h3 className="text-xl font-black mt-0.5" style={{ color: 'var(--text-primary)' }}>
                         {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(totalExpensesSum)}
                       </h3>
                     </div>
                   </div>
 
                   {/* Low Stock Warnings */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex items-center space-x-4 shadow-xl">
-                    <div className={`h-10 w-10 rounded-xl flex items-center justify-center border ${
+                  <div className="glass-card-interactive p-5 flex items-center space-x-4 animate-fade-in-up delay-400">
+                    <div className={`h-11 w-11 rounded-xl flex items-center justify-center border ${
                       lowStockCount > 0
-                        ? 'bg-red-950/20 border-red-800 text-red-400 animate-pulse'
-                        : 'bg-gray-800/40 border-gray-700 text-gray-400'
-                    }`}>
+                        ? 'animate-glow-pulse'
+                        : ''
+                    }`} style={lowStockCount > 0 ? { background: 'var(--warning-bg)', borderColor: 'rgba(251, 191, 36, 0.3)', color: 'var(--warning)' } : { background: 'rgba(100, 116, 139, 0.1)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }}>
                       <Package className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Low Stock SKUs</span>
-                      <h3 className={`text-xl font-black mt-1 ${lowStockCount > 0 ? 'text-red-400' : 'text-white'}`}>
+                      <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Low Stock SKUs</span>
+                      <h3 className="text-xl font-black mt-0.5" style={{ color: lowStockCount > 0 ? 'var(--warning)' : 'var(--text-primary)' }}>
                         {lowStockCount}
                       </h3>
                     </div>
@@ -2901,18 +2914,14 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Operations Charts Area */}
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
-                  <div className="flex justify-between items-center border-b border-gray-800/80 pb-4 mb-6">
+                <div className="glass-card-elevated p-6 animate-fade-in-up delay-300">
+                  <div className="flex justify-between items-center pb-4 mb-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                     <div>
-                      <h3 className="font-extrabold text-white text-md">Performance Analytics</h3>
-                      <p className="text-[10px] text-gray-500">Real-time profit margins compared directly with cash collected vs overhead bills.</p>
+                      <h3 className="font-extrabold text-md" style={{ color: 'var(--text-primary)' }}>Performance Analytics</h3>
+                      <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)' }}>Real-time profit margins — cash collected vs overhead.</p>
                     </div>
                     <div className="text-right">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        netProfitSum >= 0
-                          ? 'bg-[#86c232]/10 text-[#86c232] border border-[#86c232]/25'
-                          : 'bg-red-500/10 text-red-400 border border-red-500/25'
-                      }`}>
+                      <span className={`badge ${netProfitSum >= 0 ? 'badge-success' : 'badge-error'}`}>
                         Net: {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(netProfitSum)}
                       </span>
                     </div>
@@ -2923,15 +2932,15 @@ export default function DashboardPage() {
                     {/* Billed Sales Chart */}
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs font-semibold">
-                        <span className="text-gray-400">Invoiced Billings vs Cash Collected</span>
-                        <span className="text-white">
+                        <span style={{ color: 'var(--text-tertiary)' }}>Invoiced Billings vs Cash Collected</span>
+                        <span style={{ color: 'var(--text-primary)' }}>
                           {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(totalPaidCollected)} / {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(totalSales)}
                         </span>
                       </div>
-                      <div className="h-3 w-full bg-gray-950/40 border border-gray-800 rounded-full overflow-hidden">
+                      <div className="h-2.5 w-full rounded-full overflow-hidden" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)' }}>
                         <div
-                          className="h-full bg-gradient-to-r from-[#45f3ff] to-[#86c232] rounded-full transition-all duration-500 shadow-[0_0_8px_#45f3ff]"
-                          style={{ width: `${totalSales > 0 ? Math.min((totalPaidCollected / totalSales) * 100, 100) : 0}%` }}
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${totalSales > 0 ? Math.min((totalPaidCollected / totalSales) * 100, 100) : 0}%`, background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-tertiary))', boxShadow: '0 0 8px rgba(var(--accent-primary-rgb), 0.4)' }}
                         />
                       </div>
                     </div>
@@ -2939,15 +2948,15 @@ export default function DashboardPage() {
                     {/* Expenses Chart */}
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs font-semibold">
-                        <span className="text-gray-400">Overhead Expenses Ratio (of Revenue)</span>
-                        <span className="text-white">
+                        <span style={{ color: 'var(--text-tertiary)' }}>Overhead Expenses Ratio (of Revenue)</span>
+                        <span style={{ color: 'var(--text-primary)' }}>
                           {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(totalExpensesSum)} ({totalPaidCollected > 0 ? ((totalExpensesSum / totalPaidCollected) * 100).toFixed(0) : 0}%)
                         </span>
                       </div>
-                      <div className="h-3 w-full bg-gray-950/40 border border-gray-800 rounded-full overflow-hidden">
+                      <div className="h-2.5 w-full rounded-full overflow-hidden" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)' }}>
                         <div
-                          className="h-full bg-gradient-to-r from-[#6f42c1] to-red-500 rounded-full transition-all duration-500 shadow-[0_0_8px_#6f42c1]"
-                          style={{ width: `${totalPaidCollected > 0 ? Math.min((totalExpensesSum / totalPaidCollected) * 100, 100) : 0}%` }}
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${totalPaidCollected > 0 ? Math.min((totalExpensesSum / totalPaidCollected) * 100, 100) : 0}%`, background: 'linear-gradient(90deg, var(--accent-secondary), var(--error))', boxShadow: '0 0 8px rgba(var(--accent-secondary-rgb), 0.4)' }}
                         />
                       </div>
                     </div>
@@ -2955,19 +2964,15 @@ export default function DashboardPage() {
                     {/* Profit Margin Chart */}
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs font-semibold">
-                        <span className="text-gray-400">Net Profit Margin</span>
-                        <span className={`font-bold ${netProfitSum >= 0 ? 'text-[#86c232]' : 'text-red-400'}`}>
+                        <span style={{ color: 'var(--text-tertiary)' }}>Net Profit Margin</span>
+                        <span className="font-bold" style={{ color: netProfitSum >= 0 ? 'var(--success)' : 'var(--error)' }}>
                           {totalPaidCollected > 0 ? ((netProfitSum / totalPaidCollected) * 100).toFixed(0) : 0}%
                         </span>
                       </div>
-                      <div className="h-3 w-full bg-gray-950/40 border border-gray-800 rounded-full overflow-hidden">
+                      <div className="h-2.5 w-full rounded-full overflow-hidden" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)' }}>
                         <div
-                          className={`h-full rounded-full transition-all duration-500 shadow-md ${
-                            netProfitSum >= 0
-                              ? 'bg-gradient-to-r from-[#86c232] to-emerald-400 shadow-[#86c232]/30'
-                              : 'bg-red-500 shadow-red-500/30'
-                          }`}
-                          style={{ width: `${totalPaidCollected > 0 ? Math.max(0, Math.min((netProfitSum / totalPaidCollected) * 100, 100)) : 0}%` }}
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${totalPaidCollected > 0 ? Math.max(0, Math.min((netProfitSum / totalPaidCollected) * 100, 100)) : 0}%`, background: netProfitSum >= 0 ? 'linear-gradient(90deg, var(--success), #6ee7b7)' : 'var(--error)', boxShadow: netProfitSum >= 0 ? '0 0 8px rgba(52, 211, 153, 0.4)' : '0 0 8px rgba(248, 113, 113, 0.4)' }}
                         />
                       </div>
                     </div>
@@ -2975,19 +2980,21 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Double column layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                   {/* Activity Feed Column */}
-                  <div className="lg:col-span-2 bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md shadow-2xl flex flex-col justify-between">
+                  <div className="lg:col-span-2 glass-card-elevated p-6 flex flex-col justify-between animate-fade-in-up delay-400">
                     <div>
-                      <h3 className="font-extrabold text-white text-md border-b border-gray-800 pb-3 mb-4 uppercase tracking-wider font-mono">Recent Operations Feed</h3>
+                      <h3 className="font-bold text-sm pb-3 mb-4 uppercase tracking-wider" style={{ color: 'var(--text-primary)', borderBottom: '1px solid var(--border-subtle)' }}>Recent Operations Feed</h3>
                       <div className="space-y-4">
                         {recentActivities.length === 0 ? (
-                          <div className="text-center py-10 text-gray-500 text-xs">
-                            No ledger entries found. Activities will display here as payments, invoices, and expenses are logged.
+                          <div className="empty-state py-8">
+                            <div className="empty-state-icon" style={{ width: 40, height: 40 }}>📋</div>
+                            <p className="empty-state-title text-sm">No Activity Yet</p>
+                            <p className="empty-state-description text-xs">Activities will display here as payments, invoices, and expenses are logged.</p>
                           </div>
                         ) : (
                           recentActivities.map((act) => (
-                            <div key={act.id} className="flex justify-between items-center text-xs border-b border-gray-800/20 pb-3 last:border-b-0">
+                            <div key={act.id} className="flex justify-between items-center text-xs pb-3 last:border-b-0 transition-all duration-200 hover:px-1" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                               <div className="flex items-center space-x-3">
                                 <div className={`h-8 w-8 rounded-lg flex items-center justify-center text-[10px] font-bold shrink-0 border ${act.color}`}>
                                   {act.type === 'invoice' && 'INV'}
@@ -2995,15 +3002,15 @@ export default function DashboardPage() {
                                   {act.type === 'payment' && 'PMT'}
                                 </div>
                                 <div className="text-left min-w-0">
-                                  <h4 className="font-bold text-white truncate">{act.title}</h4>
-                                  <p className="text-[10px] text-gray-400 truncate">{act.desc}</p>
+                                  <h4 className="font-bold truncate" style={{ color: 'var(--text-primary)' }}>{act.title}</h4>
+                                  <p className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{act.desc}</p>
                                 </div>
                               </div>
                               <div className="text-right shrink-0">
-                                <span className="font-bold text-white">
+                                <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
                                   {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(act.value)}
                                 </span>
-                                <p className="text-[9px] text-gray-500 mt-0.5">{act.date.toLocaleDateString()}</p>
+                                <p className="text-[9px] mt-0.5" style={{ color: 'var(--text-muted)' }}>{act.date.toLocaleDateString()}</p>
                               </div>
                             </div>
                           ))
@@ -3013,9 +3020,9 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Critical Action Items Feed */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md shadow-2xl space-y-6">
+                  <div className="glass-card-elevated p-6 space-y-6 animate-fade-in-up delay-500">
                     <div>
-                      <h3 className="font-extrabold text-white text-md border-b border-gray-800 pb-3 mb-4 uppercase tracking-wider font-mono text-red-400 animate-pulse">Critical Alerts</h3>
+                      <h3 className="font-bold text-sm pb-3 mb-4 uppercase tracking-wider" style={{ color: 'var(--error)', borderBottom: '1px solid var(--border-subtle)' }}>Critical Alerts</h3>
                       <div className="space-y-4">
                         {/* Overdue Invoices Alerts */}
                         {overdueList.map((inv) => (
@@ -3074,8 +3081,9 @@ export default function DashboardPage() {
                         ))}
 
                         {overdueList.length === 0 && lowStockList.length === 0 && (
-                          <div className="text-center py-12 text-gray-500 text-xs">
-                            No critical alerts. All accounts are paid up and stock levels are stable!
+                          <div className="empty-state py-8">
+                            <p className="text-[11px] font-semibold" style={{ color: 'var(--success)' }}>✓ All clear</p>
+                            <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>No overdue invoices or low stock.</p>
                           </div>
                         )}
                       </div>
@@ -3088,37 +3096,37 @@ export default function DashboardPage() {
 
           {/* -------------------- INVENTORY & PRODUCTS TAB VIEW -------------------- */}
           {activeTab === 'inventory' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               {/* Inventory Summary Metrics */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Total Products Tracked</span>
-                  <span className="text-3xl font-black text-[#45f3ff] mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Total Products Tracked</span>
+                  <span className="text-3xl font-black mt-3" style={{ color: 'var(--accent-primary)' }}>
                     {products.length}
                   </span>
                 </div>
 
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Asset/Inventory Valuation</span>
-                  <span className="text-3xl font-black text-white mt-3">
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Asset/Inventory Valuation</span>
+                  <span className="text-3xl font-black mt-3" style={{ color: 'var(--text-primary)' }}>
                     {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                       products.reduce((sum, p) => sum + (p.quantity * p.sellingPrice), 0)
                     )}
                   </span>
                 </div>
 
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Low Stock Alerts</span>
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Low Stock Alerts</span>
                   <span className={`text-3xl font-black mt-3 ${
-                    products.filter(p => p.isLowStock).length > 0 ? 'text-red-400 animate-pulse' : 'text-gray-500'
-                  }`}>
+                    products.filter(p => p.isLowStock).length > 0 ? 'animate-glow-pulse' : ''
+                  }`} style={{ color: products.filter(p => p.isLowStock).length > 0 ? 'var(--warning)' : 'var(--text-muted)' }}>
                     {products.filter(p => p.isLowStock).length}
                   </span>
                 </div>
               </div>
 
               {/* Filters & Actions row */}
-              <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md">
+              <div className="glass-card flex flex-col md:flex-row gap-4 justify-between items-center p-4">
                 <div className="flex flex-wrap gap-4 w-full md:w-auto items-center">
                   {/* Search Product SKU / Name */}
                   <div className="relative w-full sm:w-60">
@@ -3131,7 +3139,7 @@ export default function DashboardPage() {
                         setProductCurrentPage(1);
                       }}
                       placeholder="Search SKU or name..."
-                      className="pl-9 pr-3 py-2 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#45f3ff] w-full"
+                      className="input-field input-with-icon text-xs"
                     />
                   </div>
 
@@ -3177,7 +3185,7 @@ export default function DashboardPage() {
                 <div className="flex flex-wrap gap-2 w-full md:w-auto shrink-0 justify-end">
                   <button
                     onClick={handleExportProducts}
-                    className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                    className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                     title="Export Catalog as CSV file"
                   >
                     <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -3186,7 +3194,7 @@ export default function DashboardPage() {
                   {hasPermission(user, 'manage:inventory') && (
                     <button
                       onClick={() => { setCsvImportType('products'); setIsCsvImportOpen(true); }}
-                      className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                      className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                       title="Import Catalog from CSV file"
                     >
                       <Upload className="h-3.5 w-3.5 mr-1.5" />
@@ -3195,7 +3203,7 @@ export default function DashboardPage() {
                   )}
                   <button
                     onClick={handleOpenAddProduct}
-                    className="px-4 py-2 border border-transparent rounded-lg text-xs font-bold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] transition-all flex items-center"
+                    className="btn-primary px-4 py-2 rounded-lg text-xs flex items-center"
                   >
                     <Plus className="h-4 w-4 mr-1.5" />
                     Add Product
@@ -3204,25 +3212,28 @@ export default function DashboardPage() {
               </div>
 
               {/* Product Listing Table */}
-              <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl">
+              <div className="glass-card-elevated overflow-hidden">
                 {loadingProducts ? (
                   <div className="flex flex-col items-center py-20">
-                    <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-                    <p className="mt-4 text-sm text-gray-400">Loading inventory catalog...</p>
+                    <div className="relative">
+                      <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--accent-primary)' }} />
+                      <div className="absolute inset-[-6px] rounded-full animate-glow-ring" />
+                    </div>
+                    <p className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>Loading inventory catalog...</p>
                   </div>
                 ) : processedProducts.length === 0 ? (
-                  <div className="text-center py-20 space-y-4">
-                    <Package className="h-12 w-12 text-gray-600 mx-auto" />
-                    <h3 className="font-bold text-white text-lg">No Products Found</h3>
-                    <p className="text-sm text-gray-400 max-w-sm mx-auto">
+                  <div className="empty-state py-16">
+                    <Package className="empty-state-icon" />
+                    <h3 className="empty-state-title">No Products Found</h3>
+                    <p className="empty-state-description">
                       Adjust your search filters or register a new product catalog item to populate your inventory ledger.
                     </p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="data-table">
                       <thead>
-                        <tr className="border-b border-gray-800/80 bg-gray-950/20 text-xs font-bold uppercase tracking-wider text-gray-400">
+                        <tr>
                           <th className="py-4 px-6">SKU Code</th>
                           <th className="py-4 px-6">Product Name</th>
                           <th className="py-4 px-6">Unit Price</th>
@@ -3355,8 +3366,8 @@ export default function DashboardPage() {
 
               {/* Add/Edit Product Modal Form */}
               {isProductFormOpen && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <h3 className="font-extrabold text-white text-md">
                         {editingProduct ? 'Edit Product Parameters' : 'Register New Product'}
@@ -3509,8 +3520,8 @@ export default function DashboardPage() {
 
               {/* Adjust Stock Form Modal */}
               {isAdjustmentFormOpen && adjustingProduct && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <div>
                         <h3 className="font-extrabold text-white text-md">Adjust Stock Level</h3>
@@ -3600,8 +3611,8 @@ export default function DashboardPage() {
 
               {/* Transaction Ledger History Modal */}
               {isLedgerOpen && ledgerProduct && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <div>
                         <h3 className="font-extrabold text-white text-md">Stock Ledger History</h3>
@@ -3855,7 +3866,7 @@ export default function DashboardPage() {
                 <div className="flex gap-2 w-full md:w-auto shrink-0 justify-end">
                   <button
                     onClick={handleExportExpenses}
-                    className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                    className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                     title="Export Expenses as CSV file"
                   >
                     <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -3869,7 +3880,7 @@ export default function DashboardPage() {
                   </button>
                   <button
                     onClick={handleOpenAddExpense}
-                    className="px-4 py-2 border border-transparent rounded-lg text-xs font-bold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] transition-all flex items-center"
+                    className="btn-primary px-4 py-2 rounded-lg text-xs flex items-center"
                   >
                     <Plus className="h-4 w-4 mr-1.5" />
                     Add Expense
@@ -4004,8 +4015,8 @@ export default function DashboardPage() {
 
               {/* Add/Edit Expense Form Modal */}
               {isExpenseFormOpen && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <h3 className="font-extrabold text-white text-md">
                         {editingExpense ? 'Edit Expense Record' : 'Log Business Expense'}
@@ -4146,8 +4157,8 @@ export default function DashboardPage() {
 
               {/* Category Manager Modal */}
               {isCategoryManagerOpen && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <h3 className="font-extrabold text-white text-md">Expense Category Manager</h3>
                       <button onClick={() => setIsCategoryManagerOpen(false)} className="text-gray-400 hover:text-white">
@@ -4344,7 +4355,7 @@ export default function DashboardPage() {
                     <div className="flex gap-2 w-full md:w-auto shrink-0 justify-end">
                       <button
                         onClick={handleExportInvoices}
-                        className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                        className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                         title="Export Invoices as CSV file"
                       >
                         <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -4708,8 +4719,8 @@ export default function DashboardPage() {
 
               {/* Add/Edit Invoice slide-over */}
               {isInvoiceFormOpen && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm">
-                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-8">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto modal-overlay">
+                  <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in my-8">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <h3 className="font-extrabold text-white text-lg">
                         {editingInvoice ? `Edit Invoice ${editingInvoice.invoiceNumber}` : 'Create New Invoice'}
@@ -5092,7 +5103,7 @@ export default function DashboardPage() {
                     <div className="flex gap-2 w-full md:w-auto shrink-0 justify-end">
                       <button
                         onClick={handleExportQuotations}
-                        className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                        className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                         title="Export Quotations as CSV file"
                       >
                         <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -5404,7 +5415,7 @@ export default function DashboardPage() {
 
               {/* Add/Edit Quote Editor overlay */}
               {isQuoteFormOpen && (
-                <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm">
+                <div className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto modal-overlay">
                   <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden my-8">
                     <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                       <h3 className="font-extrabold text-white text-lg">
@@ -5674,7 +5685,7 @@ export default function DashboardPage() {
                     <div className="flex gap-2 w-full md:w-auto shrink-0 justify-end">
                       <button
                         onClick={handleExportCustomers}
-                        className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                        className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                         title="Export Customers as CSV file"
                       >
                         <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -5683,7 +5694,7 @@ export default function DashboardPage() {
                       {hasPermission(user, 'manage:customers') && (
                         <button
                           onClick={() => { setCsvImportType('customers'); setIsCsvImportOpen(true); }}
-                          className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-xs font-semibold text-white transition-all flex items-center"
+                          className="btn-secondary px-3 py-2 rounded-lg text-xs flex items-center"
                           title="Import Customers from CSV file"
                         >
                           <Upload className="h-3.5 w-3.5 mr-1.5" />
@@ -6569,8 +6580,8 @@ export default function DashboardPage() {
 
           {/* Invite Member Modal */}
           {isInviteModalOpen && (
-            <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-              <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+              <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                 <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                   <h3 className="font-extrabold text-white text-md">Invite Team Member</h3>
                   <button onClick={() => setIsInviteModalOpen(false)} className="text-gray-400 hover:text-white">
@@ -6667,8 +6678,8 @@ export default function DashboardPage() {
 
           {/* Custom Role Builder Modal */}
           {isRoleModalOpen && (
-            <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-              <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+              <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in">
                 <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4">
                   <h3 className="font-extrabold text-white text-md">Build Custom Access Role</h3>
                   <button onClick={() => setIsRoleModalOpen(false)} className="text-gray-400 hover:text-white">
@@ -6753,8 +6764,8 @@ export default function DashboardPage() {
 
       {/* CSV Bulk Import Preview & Mapped Validation Modal */}
       {isCsvImportOpen && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 modal-overlay">
+          <div className="bg-[#1a1a24] border border-[#45f3ff]/20 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden modal-content animate-scale-in flex flex-col max-h-[85vh]">
             <div className="flex justify-between items-center border-b border-gray-800 px-6 py-4 shrink-0">
               <div>
                 <h3 className="font-extrabold text-white text-md">
