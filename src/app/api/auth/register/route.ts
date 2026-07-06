@@ -77,7 +77,8 @@ export async function POST(request: Request) {
     });
 
     // Send mock verification email
-    await sendVerificationEmail(email, verificationToken);
+    const origin = request.headers.get('origin') || new URL(request.url).origin;
+    await sendVerificationEmail(email, verificationToken, origin);
 
     return NextResponse.json(
       {

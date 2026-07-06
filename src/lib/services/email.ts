@@ -116,8 +116,9 @@ export function getEmailLayout(title: string, contentHtml: string): string {
   `;
 }
 
-export async function sendVerificationEmail(email: string, token: string): Promise<boolean> {
-  const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/verify-email?token=${token}`;
+export async function sendVerificationEmail(email: string, token: string, origin?: string): Promise<boolean> {
+  const appUrl = origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const verificationLink = `${appUrl}/auth/verify-email?token=${token}`;
   const htmlContent = `
     <h1 style="margin: 0 0 15px 0; font-size: 22px; font-weight: 800; color: #ffffff; text-align: center;">Verify Your Account</h1>
     <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #a0aec0; text-align: center;">
@@ -144,8 +145,9 @@ export async function sendVerificationEmail(email: string, token: string): Promi
   });
 }
 
-export async function sendPasswordResetEmail(email: string, token: string): Promise<boolean> {
-  const resetLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password?token=${token}`;
+export async function sendPasswordResetEmail(email: string, token: string, origin?: string): Promise<boolean> {
+  const appUrl = origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const resetLink = `${appUrl}/auth/reset-password?token=${token}`;
   const htmlContent = `
     <h1 style="margin: 0 0 15px 0; font-size: 22px; font-weight: 800; color: #ffffff; text-align: center;">Reset Your Password</h1>
     <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #a0aec0; text-align: center;">

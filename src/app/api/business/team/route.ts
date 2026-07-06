@@ -124,7 +124,8 @@ export async function POST(request: Request) {
     });
 
     // Send invitation email
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const origin = request.headers.get('origin') || new URL(request.url).origin;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || origin;
     const inviteLink = `${appUrl}/auth/accept-invite?token=${inviteToken}`;
     
     const businessName = user.business?.name || 'Ops Suite';

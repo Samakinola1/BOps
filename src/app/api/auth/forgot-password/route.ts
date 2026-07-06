@@ -34,7 +34,8 @@ export async function POST(request: Request) {
       },
     });
 
-    await sendPasswordResetEmail(email, resetToken);
+    const origin = request.headers.get('origin') || new URL(request.url).origin;
+    await sendPasswordResetEmail(email, resetToken, origin);
 
     return NextResponse.json(
       { message: 'If this email is registered, a password reset link has been sent.' },
