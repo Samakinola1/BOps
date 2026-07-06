@@ -3,35 +3,31 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Lock, Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Lock, Loader2, ArrowLeft, CheckCircle2, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
+  const passwordsMismatch = password && confirmPassword && password !== confirmPassword;
+
   useEffect(() => {
-    if (!token) {
-      setError('Invalid reset token. Please request a new password reset link.');
-    }
+    if (!token) { setError('Invalid reset token. Please request a new password reset link.'); }
   }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) return;
-    if (!password || !confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
+    if (!password || !confirmPassword) { setError('Please fill in all fields.'); return; }
+    if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
 
     setSubmitting(true);
     setError('');
@@ -42,13 +38,9 @@ function ResetPasswordForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, password }),
       });
-
       const data = await res.json();
-      if (res.ok) {
-        setSuccess(true);
-      } else {
-        setError(data.error || 'Failed to reset password');
-      }
+      if (res.ok) { setSuccess(true); }
+      else { setError(data.error || 'Failed to reset password'); }
     } catch (err) {
       setError('Network error occurred. Please try again.');
     } finally {
@@ -58,19 +50,19 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className="space-y-6 text-center">
+      <div className="space-y-6 text-center animate-scale-in-bounce">
         <div className="flex justify-center">
-          <CheckCircle2 className="h-16 w-16 text-[#86c232] animate-bounce" />
+          <div className="relative">
+            <ShieldCheck className="h-16 w-16" style={{ color: 'var(--success)' }} />
+            <div className="absolute inset-0 rounded-full animate-glow-ring" />
+          </div>
         </div>
-        <h3 className="text-2xl font-bold text-white">Password Reset Complete</h3>
-        <p className="text-sm text-[#c5c6c7]">
-          Your password has been successfully updated. You can now use your new password to sign in.
+        <h3 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Password Reset Complete</h3>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          Your password has been successfully updated. You can now sign in with your new password.
         </p>
         <div className="pt-4">
-          <Link
-            href="/auth/login"
-            className="inline-flex justify-center items-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] transition-all duration-200"
-          >
+          <Link href="/auth/login" className="btn-primary px-6 py-3 rounded-xl text-sm">
             Sign In Now
           </Link>
         </div>
@@ -81,83 +73,67 @@ function ResetPasswordForm() {
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       {error && (
-        <div className="bg-red-950/50 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg text-sm transition-all duration-300">
+        <div className="flex items-center px-4 py-3 rounded-xl text-sm font-medium animate-fade-in-down"
+          style={{ background: 'var(--error-bg)', border: '1px solid rgba(248, 113, 113, 0.3)', color: 'var(--error)' }}>
           {error}
         </div>
       )}
 
-      <p className="text-sm text-[#c5c6c7] text-center">
+      <p className="text-sm text-center" style={{ color: 'var(--text-secondary)' }}>
         Enter and confirm your new password below.
       </p>
 
       <div>
-        <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-[#c5c6c7]">
-          New Password
-        </label>
-        <div className="mt-2 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Lock className="h-5 w-5 text-gray-500" />
+        <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider mb-2"
+          style={{ color: 'var(--text-secondary)' }}>New Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <Lock className="h-[18px] w-[18px] transition-colors duration-200"
+              style={{ color: password ? 'var(--accent-primary)' : 'var(--text-muted)' }} />
           </div>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            disabled={!token}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2.5 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#45f3ff] focus:border-transparent transition-all duration-300"
-            placeholder="••••••••"
-          />
+          <input id="password" type={showPassword ? 'text' : 'password'} required disabled={!token}
+            value={password} onChange={(e) => setPassword(e.target.value)}
+            className="input-field input-with-icon pr-11" placeholder="••••••••" />
+          <button type="button" onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 pr-3.5 flex items-center" style={{ color: 'var(--text-muted)' }} tabIndex={-1}>
+            {showPassword ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
+          </button>
         </div>
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-xs font-semibold uppercase tracking-wider text-[#c5c6c7]">
-          Confirm New Password
-        </label>
-        <div className="mt-2 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Lock className="h-5 w-5 text-gray-500" />
+        <label htmlFor="confirmPassword" className="block text-xs font-bold uppercase tracking-wider mb-2"
+          style={{ color: 'var(--text-secondary)' }}>Confirm New Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <Lock className="h-[18px] w-[18px] transition-colors duration-200"
+              style={{ color: confirmPassword ? (passwordsMatch ? 'var(--success)' : passwordsMismatch ? 'var(--error)' : 'var(--accent-primary)') : 'var(--text-muted)' }} />
           </div>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            required
-            disabled={!token}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2.5 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#45f3ff] focus:border-transparent transition-all duration-300"
-            placeholder="••••••••"
-          />
+          <input id="confirmPassword" type={showPassword ? 'text' : 'password'} required disabled={!token}
+            value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+            className="input-field input-with-icon" placeholder="••••••••"
+            style={passwordsMismatch ? { borderColor: 'var(--error)' } : passwordsMatch ? { borderColor: 'var(--success)' } : {}} />
         </div>
+        {passwordsMismatch && (
+          <p className="mt-1.5 text-xs font-medium animate-fade-in" style={{ color: 'var(--error)' }}>Passwords do not match</p>
+        )}
+        {passwordsMatch && (
+          <p className="mt-1.5 text-xs font-medium animate-fade-in flex items-center" style={{ color: 'var(--success)' }}>
+            <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Passwords match
+          </p>
+        )}
       </div>
 
       <div>
-        <button
-          type="submit"
-          disabled={submitting || !token}
-          className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-semibold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#45f3ff] disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-        >
-          {submitting ? (
-            <>
-              <Loader2 className="animate-spin h-5 w-5 mr-2" />
-              Resetting Password...
-            </>
-          ) : (
-            'Reset Password'
-          )}
+        <button type="submit" disabled={submitting || !token} className="btn-primary w-full py-3 rounded-xl text-sm">
+          {submitting ? <><Loader2 className="animate-spin h-5 w-5 mr-2" /> Resetting Password...</> : 'Reset Password'}
         </button>
       </div>
 
       <div className="text-center">
-        <Link
-          href="/auth/login"
-          className="inline-flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to login
+        <Link href="/auth/login" className="inline-flex items-center text-sm font-medium transition-colors duration-200"
+          style={{ color: 'var(--text-tertiary)' }}>
+          <ArrowLeft className="h-4 w-4 mr-2" /> Back to login
         </Link>
       </div>
     </form>
@@ -166,25 +142,32 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex-1 flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0b0c10] via-[#1f2833] to-[#0b0c10] relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#45f3ff] rounded-full blur-[150px] opacity-10 pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#6f42c1] rounded-full blur-[150px] opacity-10 pointer-events-none" />
+    <div className="flex-1 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden"
+      style={{ background: 'var(--bg-primary)' }}>
+      <div className="absolute top-[10%] left-[15%] w-[500px] h-[500px] rounded-full opacity-[0.06] pointer-events-none animate-float"
+        style={{ background: 'radial-gradient(circle, var(--accent-primary), transparent 70%)' }} />
+      <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-[0.05] pointer-events-none animate-float-reverse"
+        style={{ background: 'radial-gradient(circle, var(--accent-secondary), transparent 70%)' }} />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
-        <h2 className="text-center text-4xl font-extrabold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-[#c5c6c7] to-[#45f3ff]">
-          New Password
-        </h2>
-        <p className="mt-2 text-center text-sm text-[#86c232] font-semibold">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 animate-fade-in-up">
+        <div className="flex justify-center mb-6">
+          <div className="h-12 w-12 rounded-xl flex items-center justify-center font-black text-2xl shadow-lg animate-gradient-shift"
+            style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'var(--bg-primary)' }}>
+            BO
+          </div>
+        </div>
+        <h2 className="text-center text-3xl font-black tracking-tight gradient-text">New Password</h2>
+        <p className="mt-2 text-center text-sm font-semibold" style={{ color: 'var(--accent-tertiary)' }}>
           Set up a new secure password
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4 sm:px-0">
-        <div className="bg-[#1a1a24]/60 backdrop-blur-xl border border-[#45f3ff]/20 py-8 px-6 shadow-2xl rounded-2xl sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4 sm:px-0 animate-fade-in-up delay-100">
+        <div className="glass-card-elevated py-8 px-6 shadow-2xl sm:px-10">
           <Suspense fallback={
             <div className="flex flex-col items-center py-10 justify-center">
-              <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-              <p className="mt-4 text-[#c5c6c7] text-sm">Loading reset form...</p>
+              <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--accent-primary)' }} />
+              <p className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>Loading reset form...</p>
             </div>
           }>
             <ResetPasswordForm />

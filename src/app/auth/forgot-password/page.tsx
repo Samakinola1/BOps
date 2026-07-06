@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Loader2, ArrowLeft, Send } from 'lucide-react';
+import { Mail, Loader2, ArrowLeft, Send, CheckCircle2 } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -12,10 +12,7 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) {
-      setError('Email address is required.');
-      return;
-    }
+    if (!email) { setError('Email address is required.'); return; }
 
     setSubmitting(true);
     setError('');
@@ -27,9 +24,8 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({ email }),
       });
 
-      if (res.ok) {
-        setSuccess(true);
-      } else {
+      if (res.ok) { setSuccess(true); }
+      else {
         const data = await res.json();
         setError(data.error || 'Request failed');
       }
@@ -41,40 +37,52 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0b0c10] via-[#1f2833] to-[#0b0c10] relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#45f3ff] rounded-full blur-[150px] opacity-10 pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#6f42c1] rounded-full blur-[150px] opacity-10 pointer-events-none" />
+    <div className="flex-1 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden"
+      style={{ background: 'var(--bg-primary)' }}>
+      <div className="absolute top-[10%] left-[15%] w-[500px] h-[500px] rounded-full opacity-[0.06] pointer-events-none animate-float"
+        style={{ background: 'radial-gradient(circle, var(--accent-primary), transparent 70%)' }} />
+      <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] rounded-full opacity-[0.05] pointer-events-none animate-float-reverse"
+        style={{ background: 'radial-gradient(circle, var(--accent-secondary), transparent 70%)' }} />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
-        <h2 className="text-center text-4xl font-extrabold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-[#c5c6c7] to-[#45f3ff]">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 animate-fade-in-up">
+        <div className="flex justify-center mb-6">
+          <div className="h-12 w-12 rounded-xl flex items-center justify-center font-black text-2xl shadow-lg animate-gradient-shift"
+            style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'var(--bg-primary)' }}>
+            BO
+          </div>
+        </div>
+        <h2 className="text-center text-3xl font-black tracking-tight gradient-text">
           Reset Password
         </h2>
-        <p className="mt-2 text-center text-sm text-[#86c232] font-semibold">
+        <p className="mt-2 text-center text-sm font-semibold" style={{ color: 'var(--accent-tertiary)' }}>
           Recover your business operations account
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4 sm:px-0">
-        <div className="bg-[#1a1a24]/60 backdrop-blur-xl border border-[#45f3ff]/20 py-8 px-6 shadow-2xl rounded-2xl sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4 sm:px-0 animate-fade-in-up delay-100">
+        <div className="glass-card-elevated py-8 px-6 shadow-2xl sm:px-10">
           {success ? (
-            <div className="space-y-6 text-center">
+            <div className="space-y-6 text-center animate-scale-in-bounce">
               <div className="flex justify-center">
-                <div className="h-12 w-12 rounded-full bg-[#86c232]/20 flex items-center justify-center text-[#86c232]">
-                  <Send className="h-6 w-6" />
+                <div className="relative">
+                  <div className="h-14 w-14 rounded-full flex items-center justify-center"
+                    style={{ background: 'var(--success-bg)' }}>
+                    <Send className="h-7 w-7" style={{ color: 'var(--success)' }} />
+                  </div>
+                  <div className="absolute inset-0 rounded-full animate-glow-ring" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-white">Reset Link Sent</h3>
-              <p className="text-sm text-[#c5c6c7]">
-                If the email <span className="font-semibold text-white">{email}</span> exists in our database, we have sent a reset password link to it.
+              <h3 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Reset Link Sent</h3>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                If the email <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{email}</span> exists in our database, we have sent a reset password link to it.
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                 Please check your inbox (and spam folder) and click the link to set a new password.
               </p>
               <div className="pt-4">
-                <Link
-                  href="/auth/login"
-                  className="inline-flex items-center text-sm font-semibold text-[#45f3ff] hover:text-white transition-colors duration-200"
-                >
+                <Link href="/auth/login"
+                  className="inline-flex items-center text-sm font-semibold transition-colors duration-200 hover:brightness-125"
+                  style={{ color: 'var(--accent-primary)' }}>
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to login
                 </Link>
@@ -83,58 +91,44 @@ export default function ForgotPasswordPage() {
           ) : (
             <form className="space-y-6" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-950/50 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg text-sm transition-all duration-300">
+                <div className="flex items-center px-4 py-3 rounded-xl text-sm font-medium animate-fade-in-down"
+                  style={{ background: 'var(--error-bg)', border: '1px solid rgba(248, 113, 113, 0.3)', color: 'var(--error)' }}>
                   {error}
                 </div>
               )}
 
-              <p className="text-sm text-[#c5c6c7] text-center">
-                Enter your email address below and we will send you a mock link to reset your account password.
+              <p className="text-sm text-center" style={{ color: 'var(--text-secondary)' }}>
+                Enter your email address below and we will send you a link to reset your password.
               </p>
 
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-[#c5c6c7]">
+                <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider mb-2"
+                  style={{ color: 'var(--text-secondary)' }}>
                   Email Address
                 </label>
-                <div className="mt-2 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-500" />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <Mail className="h-[18px] w-[18px] transition-colors duration-200"
+                      style={{ color: email ? 'var(--accent-primary)' : 'var(--text-muted)' }} />
                   </div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-2.5 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#45f3ff] focus:border-transparent transition-all duration-300"
-                    placeholder="name@company.com"
-                  />
+                  <input id="email" name="email" type="email" required
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    className="input-field input-with-icon" placeholder="name@company.com" />
                 </div>
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-semibold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#45f3ff] disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                >
+                <button type="submit" disabled={submitting} className="btn-primary w-full py-3 rounded-xl text-sm">
                   {submitting ? (
-                    <>
-                      <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                      Sending Link...
-                    </>
-                  ) : (
-                    'Send Reset Link'
-                  )}
+                    <><Loader2 className="animate-spin h-5 w-5 mr-2" /> Sending Link...</>
+                  ) : 'Send Reset Link'}
                 </button>
               </div>
 
               <div className="text-center">
-                <Link
-                  href="/auth/login"
-                  className="inline-flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <Link href="/auth/login"
+                  className="inline-flex items-center text-sm font-medium transition-colors duration-200"
+                  style={{ color: 'var(--text-tertiary)' }}>
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Cancel and return to login
                 </Link>
