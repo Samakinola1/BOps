@@ -1,0 +1,7 @@
+{
+  "to": "samakinola5@gmail.com",
+  "subject": "Verify Your Email Address - Business Operations Suite",
+  "text": "Welcome to Business Operations Suite! Please verify your email by visiting: http://localhost:3000/auth/verify-email?token=8b9e6520707c994707bb2e9d4641784b6906a41c16c557b0df9754ebf38fb8d4",
+  "html": "\n      <div style=\"font-family: sans-serif; padding: 20px; color: #333;\">\n        <h2>Welcome to Business Operations Suite</h2>\n        <p>Thank you for registering. Please click the button below to verify your email address:</p>\n        <a href=\"http://localhost:3000/auth/verify-email?token=8b9e6520707c994707bb2e9d4641784b6906a41c16c557b0df9754ebf38fb8d4\" style=\"display: inline-block; padding: 10px 20px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 15px 0;\">Verify Email</a>\n        <p>Or copy and paste this link in your browser:</p>\n        <p><a href=\"http://localhost:3000/auth/verify-email?token=8b9e6520707c994707bb2e9d4641784b6906a41c16c557b0df9754ebf38fb8d4\">http://localhost:3000/auth/verify-email?token=8b9e6520707c994707bb2e9d4641784b6906a41c16c557b0df9754ebf38fb8d4</a></p>\n      </div>\n    ",
+  "timestamp": "2026-07-04T14:35:59.299Z"
+}

@@ -1,0 +1,7 @@
+{
+  "to": "iyanuoluwa3502@gmail.com",
+  "subject": "Reset Your Password - Business Operations Suite",
+  "text": "You requested a password reset. Please visit this link to reset your password: http://localhost:3000/auth/reset-password?token=51d5ddffdf2f5350ec88bc7d2d8fc0497e451b8748a08ba2fa659d1a52f30f4a",
+  "html": "\n      <div style=\"font-family: sans-serif; padding: 20px; color: #333;\">\n        <h2>Password Reset Request</h2>\n        <p>We received a request to reset your password. Click the button below to set a new password:</p>\n        <a href=\"http://localhost:3000/auth/reset-password?token=51d5ddffdf2f5350ec88bc7d2d8fc0497e451b8748a08ba2fa659d1a52f30f4a\" style=\"display: inline-block; padding: 10px 20px; background-color: #EF4444; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 15px 0;\">Reset Password</a>\n        <p>If you did not request a password reset, you can safely ignore this email.</p>\n        <p><a href=\"http://localhost:3000/auth/reset-password?token=51d5ddffdf2f5350ec88bc7d2d8fc0497e451b8748a08ba2fa659d1a52f30f4a\">http://localhost:3000/auth/reset-password?token=51d5ddffdf2f5350ec88bc7d2d8fc0497e451b8748a08ba2fa659d1a52f30f4a</a></p>\n      </div>\n    ",
+  "timestamp": "2026-07-04T04:15:12.742Z"
+}
