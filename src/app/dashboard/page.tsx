@@ -3682,11 +3682,11 @@ export default function DashboardPage() {
 
           {/* -------------------- EXPENSES TAB VIEW -------------------- */}
           {activeTab === 'expenses' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               {/* Financial Metrics Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Total Revenue (Payments)</span>
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Total Revenue (Payments)</span>
                   <span className="text-3xl font-black text-[#86c232] mt-3">
                     {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                       invoices.reduce((sum, inv) => sum + (inv.totalPaid || 0), 0)
@@ -3694,8 +3694,8 @@ export default function DashboardPage() {
                   </span>
                 </div>
 
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Total Expenses</span>
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Total Expenses</span>
                   <span className="text-3xl font-black text-red-400 mt-3">
                     {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                       expenses.reduce((sum, exp) => sum + exp.amount, 0)
@@ -3703,13 +3703,9 @@ export default function DashboardPage() {
                   </span>
                 </div>
 
-                <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-between min-h-[110px]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Net Cashflow</span>
-                  <span className={`text-3xl font-black mt-3 ${
-                    invoices.reduce((sum, inv) => sum + (inv.totalPaid || 0), 0) - expenses.reduce((sum, exp) => sum + exp.amount, 0) >= 0
-                      ? 'text-[#45f3ff]'
-                      : 'text-red-500'
-                  }`}>
+                <div className="glass-card-interactive p-5 flex flex-col justify-between min-h-[110px]">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Net Cashflow</span>
+                  <span className="text-3xl font-black mt-3" style={{ color: invoices.reduce((sum, inv) => sum + (inv.totalPaid || 0), 0) - expenses.reduce((sum, exp) => sum + exp.amount, 0) >= 0 ? 'var(--accent-primary)' : 'var(--status-error)' }}>
                     {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(
                       invoices.reduce((sum, inv) => sum + (inv.totalPaid || 0), 0) - expenses.reduce((sum, exp) => sum + exp.amount, 0)
                     )}
@@ -3720,8 +3716,8 @@ export default function DashboardPage() {
               {/* Expense Distribution Visual Breakdown */}
               <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                 {/* SVG Donut Chart Card */}
-                <div className="md:col-span-2 bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md flex flex-col justify-center items-center">
-                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider font-mono">Category Spending Chart</h3>
+                <div className="md:col-span-2 glass-card-elevated p-6 flex flex-col justify-center items-center">
+                  <h3 className="text-sm font-bold mb-4 uppercase tracking-wider font-mono" style={{ color: 'var(--text-primary)' }}>Category Spending Chart</h3>
                   
                   {expenses.length === 0 ? (
                     <div className="h-48 flex items-center justify-center text-xs text-gray-500 font-semibold uppercase tracking-wider">
@@ -3764,7 +3760,7 @@ export default function DashboardPage() {
                         </svg>
                         <div className="absolute inset-0 flex flex-col justify-center items-center text-center leading-tight">
                           <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">TOTAL SPENT</span>
-                          <span className="text-md font-black text-white mt-1">
+                          <span className="text-md font-black mt-1" style={{ color: 'var(--text-primary)' }}>
                             {new Intl.NumberFormat(undefined, { style: 'currency', currency, maximumFractionDigits: 0 }).format(stats.total)}
                           </span>
                         </div>
@@ -3774,8 +3770,8 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Progress bars list */}
-                <div className="md:col-span-3 bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md flex flex-col justify-between">
-                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider font-mono">Spend Distribution List</h3>
+                <div className="md:col-span-3 glass-card-elevated p-6 flex flex-col justify-between">
+                  <h3 className="text-sm font-bold mb-4 uppercase tracking-wider font-mono" style={{ color: 'var(--text-primary)' }}>Spend Distribution List</h3>
                   
                   {expenses.length === 0 ? (
                     <div className="flex-1 flex items-center justify-center text-xs text-gray-500 font-semibold uppercase tracking-wider">
@@ -3788,7 +3784,7 @@ export default function DashboardPage() {
                           <div className="flex justify-between font-semibold text-gray-300">
                             <span className="truncate pr-2">{item.name}</span>
                             <div className="shrink-0 space-x-2">
-                              <span className="text-white">{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.amount)}</span>
+                              <span style={{ color: 'var(--text-primary)' }}>{new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(item.amount)}</span>
                               <span className="text-gray-500">({item.percentage.toFixed(1)}%)</span>
                             </div>
                           </div>
@@ -3807,7 +3803,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Filters & Actions row */}
-              <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md">
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-center glass-card p-4">
                 <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
                   {/* Search Vendor */}
                   <div className="relative w-full sm:w-60">
@@ -3820,7 +3816,7 @@ export default function DashboardPage() {
                         setExpenseCurrentPage(1);
                       }}
                       placeholder="Search vendor / notes..."
-                      className="pl-9 pr-3 py-2 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#45f3ff] w-full"
+                      className="input-field input-with-icon text-xs w-full"
                     />
                   </div>
 
@@ -3889,25 +3885,25 @@ export default function DashboardPage() {
               </div>
 
               {/* Expense Table Panel */}
-              <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl">
+              <div className="glass-card-elevated overflow-hidden">
                 {loadingExpenses ? (
                   <div className="flex flex-col items-center py-20">
-                    <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-                    <p className="mt-4 text-sm text-gray-400">Loading expenses...</p>
+                    <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--accent-primary)' }} />
+                    <p className="mt-4 text-sm" style={{ color: 'var(--text-tertiary)' }}>Loading expenses...</p>
                   </div>
                 ) : processedExpenses.length === 0 ? (
-                  <div className="text-center py-20 space-y-4">
-                    <TrendingUp className="h-12 w-12 text-gray-600 mx-auto" />
-                    <h3 className="font-bold text-white text-lg">No Expense Records Found</h3>
-                    <p className="text-sm text-gray-400 max-w-sm mx-auto">
+                  <div className="empty-state text-center py-20">
+                    <TrendingUp className="empty-state-icon h-12 w-12 mx-auto" />
+                    <h3 className="empty-state-title font-bold text-lg">No Expense Records Found</h3>
+                    <p className="empty-state-description text-sm max-w-sm mx-auto">
                       Adjust your search terms, select another category, or log a new business expense record.
                     </p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="data-table">
                       <thead>
-                        <tr className="border-b border-gray-800/80 bg-gray-950/20 text-xs font-bold uppercase tracking-wider text-gray-400">
+                        <tr>
                           <th className="py-4 px-6">Date</th>
                           <th className="py-4 px-6">Vendor</th>
                           <th className="py-4 px-6">Category</th>
@@ -3923,7 +3919,7 @@ export default function DashboardPage() {
                             <td className="py-4 px-6 whitespace-nowrap text-gray-400">
                               {new Date(exp.date).toLocaleDateString()}
                             </td>
-                            <td className="py-4 px-6 font-bold text-white">
+                            <td className="py-4 px-6 font-bold" style={{ color: 'var(--text-primary)' }}>
                               {exp.vendor}
                             </td>
                             <td className="py-4 px-6">
@@ -3931,7 +3927,7 @@ export default function DashboardPage() {
                                 {exp.category?.name || 'Category'}
                               </span>
                             </td>
-                            <td className="py-4 px-6 text-xs text-gray-400 max-w-[200px] truncate" title={exp.notes || ''}>
+                            <td className="py-4 px-6 text-xs max-w-[200px] truncate" title={exp.notes || ''} style={{ color: 'var(--text-tertiary)' }}>
                               {exp.notes || <span className="text-gray-600 italic">No notes</span>}
                             </td>
                             <td className="py-4 px-6">
@@ -3948,7 +3944,7 @@ export default function DashboardPage() {
                                 <span className="text-gray-600 text-xs">-</span>
                               )}
                             </td>
-                            <td className="py-4 px-6 text-right font-semibold text-white">
+                            <td className="py-4 px-6 text-right font-semibold" style={{ color: 'var(--text-primary)' }}>
                               {new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(exp.amount)}
                             </td>
                             <td className="py-4 px-6 text-right text-xs">
@@ -4272,14 +4268,14 @@ export default function DashboardPage() {
 
           {/* -------------------- INVOICES TAB VIEW -------------------- */}
           {activeTab === 'invoices' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               {!selectedInvoice ? (
                 // View 1: Invoices List View
                 <div className="space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-800 pb-5">
                     <div>
-                      <h2 className="text-3xl font-extrabold text-white">Billing & Invoicing</h2>
-                      <p className="mt-1 text-sm text-gray-400">Generate bills, record payment transactions, check balances, and view aging status.</p>
+                      <h2 className="text-3xl font-extrabold" style={{ color: 'var(--text-primary)' }}>Billing & Invoicing</h2>
+                      <p className="mt-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>Generate bills, record payment transactions, check balances, and view aging status.</p>
                     </div>
                     <div className="mt-3 sm:mt-0">
                       {hasPermission(user, 'manage:invoices') && (
@@ -4295,7 +4291,7 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Filters row */}
-                  <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md">
+                  <div className="flex flex-col md:flex-row gap-4 justify-between items-center glass-card p-4">
                     <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
                       <div className="relative w-full sm:w-60">
                         <Search className="h-4 w-4 text-gray-500 absolute left-3 top-3 pointer-events-none" />
@@ -4307,7 +4303,7 @@ export default function DashboardPage() {
                             setInvoiceCurrentPage(1);
                           }}
                           placeholder="Search invoice # or customer..."
-                          className="pl-9 pr-3 py-2 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#45f3ff] w-full"
+                          className="input-field input-with-icon text-xs w-full"
                         />
                       </div>
 
@@ -4365,25 +4361,25 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Invoices List Table */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl">
+                  <div className="glass-card-elevated overflow-hidden">
                     {loadingInvoices ? (
                       <div className="flex flex-col items-center py-20">
-                        <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-                        <p className="mt-4 text-sm text-gray-400">Loading invoices...</p>
+                        <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--accent-primary)' }} />
+                        <p className="mt-4 text-sm" style={{ color: 'var(--text-tertiary)' }}>Loading invoices...</p>
                       </div>
                     ) : processedInvoices.length === 0 ? (
-                      <div className="text-center py-20 space-y-4">
-                        <Receipt className="h-12 w-12 text-gray-600 mx-auto" />
-                        <h3 className="font-bold text-white text-lg">No Invoices Found</h3>
-                        <p className="text-sm text-gray-400 max-w-sm mx-auto">
+                      <div className="empty-state">
+                        <Receipt className="empty-state-icon" />
+                        <h3 className="empty-state-title">No Invoices Found</h3>
+                        <p className="empty-state-description">
                           Adjust your status or query filters, or create a new invoice to start billing.
                         </p>
                       </div>
                     ) : (
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="data-table">
                           <thead>
-                            <tr className="border-b border-gray-800/80 bg-gray-950/20 text-xs font-bold uppercase tracking-wider text-gray-400">
+                            <tr>
                               <th className="py-4 px-6">Invoice #</th>
                               <th className="py-4 px-6">Customer</th>
                               <th className="py-4 px-6">Due Date</th>
@@ -4552,11 +4548,11 @@ export default function DashboardPage() {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Invoice items layout */}
                     <div className="lg:col-span-2 space-y-6">
-                      <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md space-y-6">
+                      <div className="glass-card-interactive p-6 space-y-6">
                         <div className="flex flex-col sm:flex-row justify-between items-start border-b border-gray-800/80 pb-6 gap-4">
                           <div>
-                            <h3 className="font-extrabold text-white text-2xl">{selectedInvoice.invoiceNumber}</h3>
-                            <p className="text-xs text-gray-400 mt-1">Invoice document details</p>
+                            <h3 className="font-extrabold text-2xl" style={{ color: 'var(--text-primary)' }}>{selectedInvoice.invoiceNumber}</h3>
+                            <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>Invoice document details</p>
                           </div>
                           <div className="text-right">
                             <span className={`inline-flex items-center px-3 py-1 rounded text-xs font-bold uppercase ${
@@ -4677,8 +4673,8 @@ export default function DashboardPage() {
 
                     {/* Payments History log column */}
                     <div className="lg:col-span-1 space-y-6">
-                      <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md space-y-4">
-                        <h4 className="font-bold text-white text-md flex items-center border-b border-gray-800 pb-3">
+                      <div className="glass-card-interactive p-6 space-y-4">
+                        <h4 className="font-bold text-md flex items-center border-b border-gray-800 pb-3" style={{ color: 'var(--text-primary)' }}>
                           <History className="h-5 w-5 mr-2 text-[#86c232]" />
                           Payments History
                         </h4>
@@ -5021,20 +5017,20 @@ export default function DashboardPage() {
 
           {/* Quotations Tab View */}
           {activeTab === 'quotations' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               {!selectedQuote ? (
                 // View 1: Quotations List View
                 <div className="space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-800 pb-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                     <div>
-                      <h2 className="text-3xl font-extrabold text-white">Quotations & Estimations</h2>
-                      <p className="mt-1 text-sm text-gray-400">Manage quotations, track status, generate prints, or convert quotes to official invoices.</p>
+                      <h2 className="text-3xl font-extrabold" style={{ color: 'var(--text-primary)' }}>Quotations & Estimations</h2>
+                      <p className="mt-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>Manage quotations, track status, generate prints, or convert quotes to official invoices.</p>
                     </div>
                     <div className="mt-3 sm:mt-0">
                       {hasPermission(user, 'manage:quotations') && (
                         <button
                           onClick={handleOpenAddQuote}
-                          className="inline-flex items-center px-4 py-2.5 border border-transparent rounded-lg text-xs font-bold text-[#0b0c10] bg-[#45f3ff] hover:bg-[#c5c6c7] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                          className="btn-primary px-4 py-2.5 rounded-lg text-xs inline-flex items-center"
                         >
                           <Plus className="h-4 w-4 mr-1.5" />
                           Create Quotation
@@ -5044,7 +5040,7 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Filters row */}
-                  <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md">
+                  <div className="glass-card flex flex-col md:flex-row gap-4 justify-between items-center p-4">
                     <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
                       <div className="relative w-full sm:w-60">
                         <Search className="h-4 w-4 text-gray-500 absolute left-3 top-3 pointer-events-none" />
@@ -5056,7 +5052,7 @@ export default function DashboardPage() {
                             setQuoteCurrentPage(1);
                           }}
                           placeholder="Search quote number or customer..."
-                          className="pl-9 pr-3 py-2 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#45f3ff] w-full"
+                          className="input-field input-with-icon text-xs"
                         />
                       </div>
 
@@ -5113,25 +5109,28 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Quotations List table */}
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl">
+                  <div className="glass-card-elevated overflow-hidden">
                     {loadingQuotes ? (
                       <div className="flex flex-col items-center py-20">
-                        <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-                        <p className="mt-4 text-sm text-gray-400">Searching quotations...</p>
+                        <div className="relative">
+                          <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--accent-primary)' }} />
+                          <div className="absolute inset-[-6px] rounded-full animate-glow-ring" />
+                        </div>
+                        <p className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>Searching quotations...</p>
                       </div>
                     ) : processedQuotations.length === 0 ? (
-                      <div className="text-center py-20 space-y-4">
-                        <FileSignature className="h-12 w-12 text-gray-600 mx-auto" />
-                        <h3 className="font-bold text-white text-lg">No Quotations Found</h3>
-                        <p className="text-sm text-gray-400 max-w-sm mx-auto">
+                      <div className="empty-state py-16">
+                        <FileSignature className="empty-state-icon" />
+                        <h3 className="empty-state-title">No Quotations Found</h3>
+                        <p className="empty-state-description">
                           Adjust your status or query filters, or create a new quotation proposal.
                         </p>
                       </div>
                     ) : (
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="data-table">
                           <thead>
-                            <tr className="border-b border-gray-800/80 bg-gray-950/20 text-xs font-bold uppercase tracking-wider text-gray-400">
+                            <tr>
                               <th className="py-4 px-6">Quote Number</th>
                               <th className="py-4 px-6">Customer</th>
                               <th className="py-4 px-6">Expiry Date</th>
@@ -5622,14 +5621,14 @@ export default function DashboardPage() {
 
           {/* Customers Tab View */}
           {activeTab === 'customers' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               {!selectedCustomer ? (
                 // View 1: Customer List View
                 <div className="space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-800 pb-5">
                     <div>
-                      <h2 className="text-3xl font-extrabold text-white">Customer Database</h2>
-                      <p className="mt-1 text-sm text-gray-400">View details, contact info, invoice metrics, and notes for your clients.</p>
+                      <h2 className="text-3xl font-extrabold" style={{ color: 'var(--text-primary)' }}>Customer Database</h2>
+                      <p className="mt-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>View details, contact info, invoice metrics, and notes for your clients.</p>
                     </div>
                     <div className="mt-3 sm:mt-0">
                       {hasPermission(user, 'manage:customers') && (
@@ -5644,7 +5643,7 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Search and sorting bar */}
-                  <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-4 backdrop-blur-md">
+                  <div className="flex flex-col md:flex-row gap-4 justify-between items-center glass-card p-4">
                     <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
                       <div className="relative w-full sm:w-60">
                         <Search className="h-4 w-4 text-gray-500 absolute left-3 top-3 pointer-events-none" />
@@ -5656,7 +5655,7 @@ export default function DashboardPage() {
                             setCustomerCurrentPage(1);
                           }}
                           placeholder="Search customer name, business or email..."
-                          className="pl-9 pr-3 py-2 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#45f3ff] w-full"
+                          className="input-field input-with-icon text-xs w-full"
                         />
                       </div>
 
@@ -5704,25 +5703,25 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl">
+                  <div className="glass-card-elevated overflow-hidden">
                     {loadingCustomers ? (
                       <div className="flex flex-col items-center py-20">
-                        <Loader2 className="animate-spin h-10 w-10 text-[#45f3ff]" />
-                        <p className="mt-4 text-sm text-gray-400">Searching customers...</p>
+                        <Loader2 className="animate-spin h-10 w-10" style={{ color: 'var(--color-accent)' }} />
+                        <p className="mt-4 text-sm" style={{ color: 'var(--text-tertiary)' }}>Searching customers...</p>
                       </div>
                     ) : processedCustomers.length === 0 ? (
                       <div className="text-center py-20 space-y-4">
                         <Users className="h-12 w-12 text-gray-600 mx-auto" />
-                        <h3 className="font-bold text-white text-lg">No Customers Found</h3>
-                        <p className="text-sm text-gray-400 max-w-sm mx-auto">
+                        <h3 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>No Customers Found</h3>
+                        <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--text-tertiary)' }}>
                           Adjust your query filter criteria or register a new customer profile.
                         </p>
                       </div>
                     ) : (
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="data-table">
                           <thead>
-                            <tr className="border-b border-gray-800/80 bg-gray-950/20 text-xs font-bold uppercase tracking-wider text-gray-400">
+                            <tr>
                               <th className="py-4 px-6">Name</th>
                               <th className="py-4 px-6">Business Name</th>
                               <th className="py-4 px-6">Contact Info</th>
@@ -5737,7 +5736,7 @@ export default function DashboardPage() {
                                 className="group hover:bg-[#1f2833]/30 cursor-pointer transition-colors duration-150"
                               >
                                 <td className="py-4 px-6">
-                                  <span className="font-bold text-white group-hover:text-[#45f3ff] transition-colors">{cust.name}</span>
+                                  <span className="font-bold group-hover:text-[#45f3ff] transition-colors" style={{ color: 'var(--text-primary)' }}>{cust.name}</span>
                                 </td>
                                 <td className="py-4 px-6 text-sm text-gray-300">{cust.businessName || <span className="text-gray-600">-</span>}</td>
                                 <td className="py-4 px-6 text-xs text-gray-400 space-y-1">
@@ -5968,8 +5967,8 @@ export default function DashboardPage() {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-800 pb-5">
                 <div>
-                  <h2 className="text-3xl font-extrabold text-white">Business Settings</h2>
-                  <p className="mt-1 text-sm text-gray-400">Configure your company information, default currency, and invoice formats.</p>
+                  <h2 className="text-3xl font-extrabold" style={{ color: 'var(--text-primary)' }}>Business Settings</h2>
+                  <p className="mt-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>Configure your company information, default currency, and invoice formats.</p>
                 </div>
                 <div className="mt-3 sm:mt-0 bg-gray-800/40 border border-gray-700 px-3 py-1.5 rounded-lg flex items-center">
                   <Building className="h-4 w-4 mr-2 text-[#45f3ff]" />
@@ -5980,8 +5979,8 @@ export default function DashboardPage() {
               </div>
 
               {/* Logo Card Section */}
-              <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md">
-                <h3 className="text-lg font-bold text-white mb-4">Company Logo</h3>
+              <div className="glass-card-elevated p-6">
+                <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Company Logo</h3>
                 <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   <div className="h-24 w-24 rounded-2xl border-2 border-dashed border-gray-700 flex items-center justify-center overflow-hidden bg-black/40 relative group">
                     {business?.logoUrl ? (
@@ -6026,8 +6025,8 @@ export default function DashboardPage() {
               </div>
 
               {/* Form Details Card */}
-              <div className="bg-[#1a1a24]/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md">
-                <h3 className="text-lg font-bold text-white mb-4">Configuration</h3>
+              <div className="glass-card-elevated p-6">
+                <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Configuration</h3>
                 
                 <form onSubmit={handleBusinessSaveLocal} className="space-y-6">
                   {businessMsg.text && (
@@ -6043,7 +6042,7 @@ export default function DashboardPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Company Name</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Company Name</label>
                       <input
                         type="text"
                         required
@@ -6054,7 +6053,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Tax Number</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Tax Number</label>
                       <input
                         type="text"
                         value={taxNumber}
@@ -6065,17 +6064,17 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="md:col-span-2">
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Business Address</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Business Address</label>
                       <textarea
                         rows={3}
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="mt-2 block w-full px-4 py-3 bg-[#0f0f15]/80 border border-gray-800 rounded-lg text-white focus:outline-none resize-none"
+                        className="mt-2 block w-full px-4 py-3 input-field resize-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Default Currency</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Default Currency</label>
                       <div className="mt-2 relative rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <DollarSign className="h-4 w-4 text-gray-500" />
@@ -6096,7 +6095,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Invoice Numbering Prefix</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Invoice Numbering Prefix</label>
                       <div className="mt-2 relative rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <FileText className="h-4 w-4 text-gray-500" />
@@ -6112,7 +6111,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Invoice Number Padding digits</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Invoice Number Padding digits</label>
                       <input
                         type="number"
                         min="1"
@@ -6125,7 +6124,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">Next Invoice Number Sequence</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>Next Invoice Number Sequence</label>
                       <input
                         type="number"
                         min="1"
